@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T & F — Rôles d'Honneur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ── Premium fonts (local install on Mac) ── */
+@font-face{font-family:'Parfumerie Script';src:local('Parfumerie Script'),local('Parfumerie Script Pro'),local('Parfumerie Script Regular'),local('ParfumerieScript');}
+@font-face{font-family:'TAN Angleton';src:local('TAN Angleton'),local('TAN - Angleton'),local('TANAngleton'),local('TAN Angleton Regular');}
+@font-face{font-family:'Versailles';src:local('Versailles'),local('ITC Versailles'),local('Versailles LT Std'),local('Versailles 55 Roman'),local('Versailles 55');}
+
+/* ─── Palette officielle — DA document ─── */
+:root{
+  --cream:  #FAF5EF;
+  --cream2: #F2EAE0;
+  --navy:   #1F2F44;   /* Deep Navy — DA */
+  --ocean:  #4F6D8A;   /* Ocean Blue — DA */
+  --sky:    #BFD4E6;   /* Soft Sky — DA */
+  --sand:   #D8CFC4;   /* Warm Sand — DA */
+  --brown:  #7A5040;   /* Amethyst = cognac/brun premium */
+  --bord:   #6B2035;   /* Rich Plum Pink = Bordeaux */
+  --gold:   #C9A86C;
+  --gold2:  #B8913A;
+  --text:   #1F2F44;
+  --text-mid:#4F6D8A;
+  --text-light:#8A9EB8;
+  --border: rgba(31,47,68,.1);
+  --border2:rgba(31,47,68,.22);
+  --gold-border:rgba(201,168,108,.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;background:none;border:none}
+:focus-visible{outline:2px solid var(--ocean);outline-offset:3px}
+
+/* ════════════════════════════════════════
+   PORTE D'ENTRÉE
+════════════════════════════════════════ */
+#intro{
+  position:fixed;inset:0;z-index:2000;
+  background:var(--navy);    /* fond navy = aucun gap visible à l'ouverture */
+  cursor:pointer;user-select:none;
+  transition:opacity .6s ease;
+}
+#intro.fading{opacity:0;pointer-events:none}
+#intro.gone{display:none}
+
+.door{
+  position:absolute;top:0;height:100%;
+  background:var(--navy);
+  display:flex;align-items:center;
+  overflow:visible;          /* lettre jamais coupée */
+  will-change:transform;
+  transition:transform 1.65s cubic-bezier(0.76,0,0.24,1);
+}
+.door-l{left:0;width:51%;justify-content:flex-end;padding-right:9vw}
+.door-r{right:0;width:51%;justify-content:flex-start;padding-left:9vw}
+#intro.open .door-l{transform:translateX(-102%)}
+#intro.open .door-r{transform:translateX(102%)}
+
+.dletter{
+  font-family:'Parfumerie Script','Pinyon Script',cursive;
+  font-size:clamp(8rem,23vw,20rem);
+  color:var(--gold);opacity:.9;
+  line-height:1.1;display:block;
+}
+
+/* Séparateur central */
+.icenter{
+  position:absolute;left:50%;top:0;bottom:0;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  z-index:10;pointer-events:none;
+}
+.iline{
+  flex:1;width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(201,168,108,.5) 20%,rgba(201,168,108,.5) 80%,transparent);
+}
+.iamp{
+  font-family:'Parfumerie Script','Pinyon Script',cursive;
+  font-size:2.6rem;color:var(--gold);
+  padding:.5rem .7rem;background:var(--navy);line-height:1;
+}
+
+/* Bas */
+.ifoot{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:.45rem;
+  padding-bottom:3.5rem;z-index:10;pointer-events:none;
+}
+.inames{
+  font-family:'Parfumerie Script','Pinyon Script',cursive;
+  font-size:1.8rem;color:rgba(201,168,108,.65);
+}
+.ihint{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(201,168,108,.38);
+  animation:hint-pulse 2.8s ease-in-out infinite;
+}
+@keyframes hint-pulse{0%,100%{opacity:.28}55%{opacity:.72}}
+
+/* ════════════════════════════════════════
+   MAIN
+════════════════════════════════════════ */
+#main{opacity:0;transition:opacity .9s ease}
+#main.visible{opacity:1}
+
+/* ─── NAV ─── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(250,245,239,.97);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--gold-border);
+  padding:0 4rem;height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;height:54px}
+.nav-logo img{height:54px;width:auto;transition:opacity .25s}
+.nav-logo:hover img{opacity:.7}
+.nav-links{display:flex;align-items:center;gap:2.8rem;list-style:none}
+.nav-links a{
+  font-family:'DM Sans',sans-serif;font-weight:300;font-size:.7rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);
+  position:relative;padding-bottom:2px;transition:color .25s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;
+  height:1px;width:0;background:var(--gold);
+  transition:width .32s cubic-bezier(.4,0,.2,1);
+}
+.nav-links a:hover{color:var(--navy)}
+.nav-links a:hover::after{width:100%}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:calc(100svh - 72px);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:4rem 2rem 3rem;
+  position:relative;overflow:hidden;
+}
+.hero-ghost{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-55%);
+  font-family:'Parfumerie Script','Pinyon Script',cursive;
+  font-size:clamp(12rem,32vw,26rem);
+  color:var(--navy);opacity:.038;
+  line-height:1;pointer-events:none;white-space:nowrap;user-select:none;
+}
+.hero-date{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--text-light);margin-bottom:2rem;position:relative;
+}
+.hero-script{
+  font-family:'Parfumerie Script','Pinyon Script',cursive;
+  font-size:clamp(1.6rem,3.2vw,2.4rem);
+  color:var(--ocean);opacity:.72;
+  margin-bottom:.3rem;position:relative;
+}
+.hero-h{
+  font-family:'TAN Angleton','Bodoni Moda','Playfair Display',serif;
+  font-weight:400;
+  font-size:clamp(3rem,7.5vw,7rem);
+  line-height:.95;color:var(--navy);
+  margin-bottom:2.8rem;position:relative;
+  letter-spacing:-.01em;
+}
+
+/* Countdown éditorial — jours large / HH:MM:SS discret */
+.countdown{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin-bottom:3.2rem;position:relative;
+}
+.cd-days{text-align:center;padding-right:3rem}
+.cd-days-n{
+  font-family:'TAN Angleton','Bodoni Moda','Playfair Display',serif;
+  font-weight:400;font-style:italic;
+  font-size:clamp(5.5rem,14vw,11rem);
+  color:var(--navy);line-height:1;display:block;
+  font-variant-numeric:tabular-nums;
+}
+.cd-days-l{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--text-light);display:block;margin-top:.4rem;
+}
+.cd-sep-line{
+  width:1px;height:5.5rem;
+  background:var(--gold-border);
+  flex-shrink:0;
+}
+.cd-hms{text-align:center;padding-left:3rem}
+.cd-hms-n{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:clamp(1.4rem,3.5vw,2.8rem);
+  color:var(--navy);line-height:1;display:block;
+  font-variant-numeric:tabular-nums;letter-spacing:.04em;
+}
+.cd-hms-l{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-light);display:block;margin-top:.55rem;
+}
+
+/* ─── CTAs ─── */
+.ctas{
+  display:flex;gap:1.1rem;justify-content:center;
+  flex-wrap:wrap;position:relative;
+}
+.btn-p{
+  display:inline-block;position:relative;overflow:hidden;
+  padding:1.05rem 2.8rem;
+  font-family:'DM Sans',sans-serif;font-weight:400;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--cream);background:var(--navy);
+  transition:background .3s ease;
+}
+.btn-p::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1.5px;background:var(--gold);
+  transition:width .38s cubic-bezier(.4,0,.2,1);
+}
+.btn-p:hover{background:var(--ocean)}
+.btn-p:hover::after{width:100%}
+
+.btn-s{
+  display:inline-block;position:relative;
+  padding:1.05rem 2.8rem;
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--navy);border:1px solid rgba(31,47,68,.22);
+  transition:border-color .3s ease;
+}
+.btn-s::after{
+  content:'';position:absolute;bottom:-1px;left:-1px;
+  width:0;height:1.5px;background:var(--gold);
+  transition:width .38s cubic-bezier(.4,0,.2,1);
+}
+.btn-s:hover{border-color:var(--gold)}
+.btn-s:hover::after{width:calc(100% + 2px)}
+
+/* ─── STATS STRIP ─── */
+.stats-strip{
+  background:var(--navy);
+  display:flex;justify-content:center;align-items:stretch;
+  flex-wrap:wrap;
+}
+.ss-block{
+  padding:2.2rem 5rem;text-align:center;
+  border-right:1px solid rgba(255,255,255,.05);
+  display:flex;flex-direction:column;align-items:center;gap:.42rem;
+  transition:background .3s;
+}
+.ss-block:last-child{border-right:none}
+.ss-block:hover{background:rgba(255,255,255,.025)}
+.ss-n{
+  font-family:'TAN Angleton','Bodoni Moda','Playfair Display',serif;
+  font-weight:400;font-style:italic;
+  font-size:2.8rem;color:var(--gold);line-height:1;
+  transition:color .3s;font-variant-numeric:tabular-nums;
+}
+.ss-block:hover .ss-n{color:#d9bc82}
+.ss-l{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(250,245,239,.28);
+}
+
+/* ─── SIGN-OFF ─── */
+.sign-off{
+  padding:2rem;text-align:center;
+}
+.sign-off img{
+  height:44px;width:auto;opacity:.14;
+  transition:opacity .3s;
+}
+.sign-off:hover img{opacity:.3}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .nav{padding:0 1.4rem;height:64px}
+  .nav-logo{height:46px}
+  .nav-logo img{height:46px}
+  .hero{padding:3rem 1.4rem 2.5rem;min-height:calc(100svh - 64px)}
+  .cd-days-n{font-size:clamp(4rem,18vw,7rem)}
+  .stats-strip{flex-direction:column}
+  .ss-block{padding:1.8rem 2rem;border-right:none;border-bottom:1px solid rgba(255,255,255,.05)}
+  .ss-block:last-child{border-bottom:none}
+}
+@media(max-width:560px){
+  .nav-links{display:none}
+  .ctas{flex-direction:column;align-items:center}
+  .ctas .btn-p,.ctas .btn-s{width:100%;max-width:280px;text-align:center}
+  .cd-days{padding-right:1.6rem}
+  .cd-hms{padding-left:1.6rem}
+  .dletter{font-size:clamp(6rem,28vw,14rem)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PORTE ═══ -->
+<div id="intro">
+  <div class="door door-l"><span class="dletter">T</span></div>
+  <div class="door door-r"><span class="dletter">F</span></div>
+  <div class="icenter">
+    <div class="iline"></div>
+    <span class="iamp">&</span>
+    <div class="iline"></div>
+  </div>
+  <div class="ifoot">
+    <span class="inames">Thomy &amp; Florian</span>
+    <span class="ihint">— Cliquer pour entrer —</span>
+  </div>
+</div>
+
+<!-- ═══ CONTENU ═══ -->
+<div id="main">
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo" aria-label="Accueil">
+      <img src="logo noir sans fond.png" alt="T & F">
+    </a>
+    <ul class="nav-links">
+      <li><a href="roles.html">Les rôles</a></li>
+      <li><a href="quiz.html">Questionnaire</a></li>
+      <li><a href="resultat.html">Mes résultats</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <section class="hero">
+      <span class="hero-ghost" aria-hidden="true">T&amp;F</span>
+      <p class="hero-date">12 · XII · MMXXVI</p>
+      <p class="hero-script">Thomy &amp; Florian</p>
+      <h1 class="hero-h">Rôles d'Honneur</h1>
+
+      <div class="countdown">
+        <div class="cd-days">
+          <span class="cd-days-n" id="cdDays">—</span>
+          <span class="cd-days-l">Jours</span>
+        </div>
+        <div class="cd-sep-line"></div>
+        <div class="cd-hms">
+          <span class="cd-hms-n">
+            <span id="cdH">—</span> · <span id="cdM">—</span> · <span id="cdS">—</span>
+          </span>
+          <span class="cd-hms-l">H &nbsp;·&nbsp; Min &nbsp;·&nbsp; Sec</span>
+        </div>
+      </div>
+
+      <div class="ctas">
+        <a href="quiz.html" class="btn-p">Trouver mon rôle</a>
+        <a href="roles.html" class="btn-s">Voir les 30 rôles</a>
+      </div>
+    </section>
+
+    <div class="stats-strip">
+      <div class="ss-block">
+        <span class="ss-n" id="sbReg">—</span>
+        <span class="ss-l">Inscrits</span>
+      </div>
+      <div class="ss-block">
+        <span class="ss-n" id="sbFree">—</span>
+        <span class="ss-l">Places disponibles</span>
+      </div>
+      <div class="ss-block">
+        <span class="ss-n" id="sbFull">—</span>
+        <span class="ss-l">Rôles complets</span>
+      </div>
+    </div>
+
+    <div class="sign-off">
+      <img src="logo noir sans fond.png" alt="">
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ─── Porte ─── */
+(function(){
+  const intro=document.getElementById('intro');
+  const main=document.getElementById('main');
+  function open(){
+    intro.classList.add('open');
+    setTimeout(()=>main.classList.add('visible'),600);
+    setTimeout(()=>intro.classList.add('fading'),1500);
+    setTimeout(()=>intro.classList.add('gone'),2150);
+    sessionStorage.setItem('introSeen','1');
+  }
+  if(sessionStorage.getItem('introSeen')){
+    intro.classList.add('gone');
+    main.classList.add('visible');
+  }else{
+    intro.addEventListener('click',open,{once:true});
+  }
+})();
+
+/* ─── Compte à rebours — 12/12/2026 à 14h00 Paris (UTC+1) ─── */
+(function(){
+  const WEDDING=new Date('2026-12-12T14:00:00+01:00').getTime();
+  const pad=n=>String(n).padStart(2,'0');
+  function tick(){
+    const diff=WEDDING-Date.now();
+    if(diff<=0){
+      document.getElementById('cdDays').textContent='0';
+      ['cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');
+      return;
+    }
+    document.getElementById('cdDays').textContent=Math.floor(diff/864e5);
+    document.getElementById('cdH').textContent=pad(Math.floor((diff%864e5)/36e5));
+    document.getElementById('cdM').textContent=pad(Math.floor((diff%36e5)/6e4));
+    document.getElementById('cdS').textContent=pad(Math.floor((diff%6e4)/1e3));
+  }
+  tick();setInterval(tick,1000);
+})();
+
+/* ─── Dashboard live ─── */
+(function(){
+  function refresh(){
+    const sups=(JSON.parse(localStorage.getItem('cgm')||'{"signups":{}}').signups)||{};
+    let reg=0,full=0;
+    for(let i=1;i<=30;i++){const n=(sups[String(i)]||[]).length;reg+=n;if(n>=2)full++;}
+    document.getElementById('sbReg').textContent=reg;
+    document.getElementById('sbFree').textContent=60-reg;
+    document.getElementById('sbFull').textContent=full;
+  }
+  refresh();window.addEventListener('storage',refresh);
+})();
+</script>
+</body>
+</html>
