@@ -979,11 +979,30 @@ const ROLES = [
 /* ═══════════════════════════════════════════════
    LOCAL STORAGE HELPERS
    ═══════════════════════════════════════════════ */
-function getData() {
-  try { return JSON.parse(localStorage.getItem('cgm') || '{"signups":{}}'); }
-  catch (e) { return { signups: {} }; }
+/* Firebase Realtime Database */
+const FB_URL = 'https://roles-du-mariage-default-rtdb.europe-west1.firebasedatabase.app/signups.json';
+let _signups = {};
+
+async function fbLoad() {
+  try {
+    const r = await fetch(FB_URL);
+    const data = await r.json();
+    _signups = (data && typeof data === 'object') ? data : {};
+  } catch(e) { /* garde le cache local en cas d'erreur réseau */ }
 }
-function saveData(d) { localStorage.setItem('cgm', JSON.stringify(d)); }
+
+async function fbSave() {
+  try {
+    await fetch(FB_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(_signups)
+    });
+  } catch(e) { /* silent fail */ }
+}
+
+function getData()   { return { signups: _signups }; }
+function saveData(d) { _signups = d.signups || {}; fbSave(); }
 function getRSups(id) { return (getData().signups || {})[String(id)] || []; }
 function getSpots(id) { const r = ROLES.find(x => x.id === id); return r ? (r.spots || 2) : 2; }
 function isFull(id)   { return getRSups(id).length >= getSpots(id); }
@@ -1283,8 +1302,9 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-window.addEventListener('storage', buildContent);
-buildContent();
+// Chargement initial depuis Firebase, puis synchro toutes les 30 secondes
+fbLoad().then(buildContent);
+setInterval(() => fbLoad().then(buildContent), 30000);
 </script>
 
 <script src="transitions.js"></script>

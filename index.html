@@ -479,17 +479,13 @@ html, body { height: 100svh; overflow: hidden; }
 }());
 
 /* ═══════════════════════════════════════════════
-   DASHBOARD — données localStorage
+   DASHBOARD — données Firebase
    ═══════════════════════════════════════════════ */
 (function () {
-  function getData() {
-    try { return JSON.parse(localStorage.getItem('cgm') || '{"signups":{}}'); }
-    catch (e) { return { signups: {} }; }
-  }
+  var FB_URL = 'https://roles-du-mariage-default-rtdb.europe-west1.firebasedatabase.app/signups.json';
 
-  function updateDash() {
-    var data = getData();
-    var signups = data.signups || {};
+  function updateDash(signups) {
+    signups = signups || {};
     var totalPeople = 0;
     var fullRoles = 0;
     Object.keys(signups).forEach(function (k) {
@@ -505,8 +501,15 @@ html, body { height: 100svh; overflow: hidden; }
     document.getElementById('dbFull').textContent    = fullRoles;
   }
 
-  updateDash();
-  window.addEventListener('storage', updateDash);
+  function fetchAndUpdate() {
+    fetch(FB_URL)
+      .then(function(r) { return r.json(); })
+      .then(function(data) { updateDash(data && typeof data === 'object' ? data : {}); })
+      .catch(function() { updateDash({}); });
+  }
+
+  fetchAndUpdate();
+  setInterval(fetchAndUpdate, 30000);
 }());
 </script>
 
