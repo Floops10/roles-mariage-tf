@@ -320,6 +320,8 @@
 .spot-circle.taken { background: var(--ocean); border-color: var(--ocean); }
 .spot-circle-name { font-family: var(--font-body); font-weight: 300; font-size: .78rem; color: var(--navy); font-style: italic; }
 .spot-circle-empty { font-family: var(--font-body); font-weight: 300; font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: var(--text-light); }
+.spot-remove { background: none; border: none; cursor: pointer; color: var(--text-light); font-size: .7rem; line-height: 1; padding: .2rem .35rem; margin-left: auto; border-radius: 50%; transition: color .18s ease, background .18s ease; }
+.spot-remove:hover { color: #b03030; background: rgba(176,48,48,.08); }
 
 .role-cta-hint {
   font-family: var(--font-body);
@@ -1199,27 +1201,27 @@ function renderModalSignup(id) {
   const spotsHtml = '<div class="spots-display">' +
     Array.from({length: maxSp}, function(_, i) {
       return sups[i]
-        ? '<div class="spot-line"><div class="spot-circle taken"></div><span class="spot-circle-name">' + sups[i] + '</span></div>'
+        ? '<div class="spot-line"><div class="spot-circle taken"></div><span class="spot-circle-name">' + sups[i] + '</span>' +
+          '<button class="spot-remove" onclick="removeSpot(' + id + ',\'' + sups[i].replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" title="Se désinscrire">✕</button></div>'
         : '<div class="spot-line"><div class="spot-circle"></div><span class="spot-circle-empty">Place disponible</span></div>';
     }).join('') +
   '</div>';
 
   if (full) {
     el.innerHTML = '<h3 class="modal-signup-title">Inscriptions</h3>' + spotsHtml +
-      '<div class="modal-full">Ce rôle est complet.</div>';
+      '<div class="modal-full">Ce rôle est complet.</div>' +
+      '<div id="modalMsg"></div>';
     return;
   }
 
   el.innerHTML =
     '<h3 class="modal-signup-title">Rejoindre ce rôle</h3>' +
-    '<p class="modal-signup-sub">Entrez votre prénom. Pour vous désinscrire, entrez votre prénom et cliquez « Retirer ».</p>' +
+    '<p class="modal-signup-sub">Entrez votre prénom pour rejoindre ce rôle.</p>' +
     spotsHtml +
     '<div class="signup-input-row">' +
       '<input id="signupName" class="signup-input" type="text" placeholder="Votre prénom…" maxlength="40" autocomplete="given-name">' +
       '<button class="btn-join" id="btnJoin" onclick="joinRole()">Rejoindre</button>' +
     '</div>' +
-    '<button style="font-family:var(--font-body);font-weight:300;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--text-light);transition:color var(--dur-mid) ease;margin-top:.2rem;background:none;border:none;cursor:pointer" ' +
-      'onmouseover="this.style.color=\'var(--bord)\'" onmouseout="this.style.color=\'var(--text-light)\'" onclick="leaveRole()">Retirer mon inscription</button>' +
     '<div id="modalMsg"></div>';
 
   document.getElementById('signupName').addEventListener('keydown', function(e) { if (e.key === 'Enter') joinRole(); });
@@ -1243,11 +1245,15 @@ function joinRole() {
 function leaveRole() {
   const name = (document.getElementById('signupName')?.value || '').trim();
   if (name.length < 2) { showMsg('Entrez votre prénom pour vous désinscrire.', 'error'); return; }
-  const prev = getRSups(openModalId).length;
-  doLeave(openModalId, name);
-  if (getRSups(openModalId).length < prev) {
+  removeSpot(openModalId, name);
+}
+
+function removeSpot(id, name) {
+  const prev = getRSups(id).length;
+  doLeave(id, name);
+  if (getRSups(id).length < prev) {
     showMsg(name + ' retiré(e).', 'success');
-    renderModalSignup(openModalId);
+    renderModalSignup(id);
     buildContent();
   } else {
     showMsg(name + " n'était pas inscrit(e).", 'error');
