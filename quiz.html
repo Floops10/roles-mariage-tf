@@ -110,7 +110,6 @@ body {
 .name-title {
   font-family: var(--font-title);
   font-weight: 400;
-  font-style: italic;
   font-size: clamp(1.7rem, 4vw, 2.6rem);
   color: var(--navy);
   margin-bottom: .8rem;
@@ -196,7 +195,6 @@ body {
 .q-text {
   font-family: var(--font-title);
   font-weight: 400;
-  font-style: italic;
   font-size: clamp(1.22rem, 2.8vw, 1.7rem);
   line-height: 1.38;
   color: var(--navy);
@@ -243,7 +241,6 @@ body {
 .q-ans-n {
   font-family: var(--font-title);
   font-size: 1.1rem;
-  font-style: italic;
   color: rgba(79,109,138,.22);
   min-width: 1.4rem;
   line-height: 1.55;
@@ -382,6 +379,49 @@ body {
   text-transform: uppercase;
 }
 
+/* ─── MILESTONE POP-UP ─── */
+.q-milestone {
+  position: fixed;
+  bottom: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--navy);
+  color: var(--cream);
+  padding: .7rem 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 600;
+  transition: transform .45s var(--ease-out), opacity .38s ease;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--gold);
+}
+.q-milestone.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.q-milestone-diamond {
+  color: var(--gold);
+  font-size: .55rem;
+  opacity: .7;
+}
+.q-milestone-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.q-milestone-count {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin: 0 .15rem;
+  line-height: 1;
+}
+
 @media (max-width: 640px) {
   .bar { padding: .85rem 1.2rem; height: 64px; }
   .bar-logo { height: 44px; }
@@ -442,6 +482,12 @@ body {
     <button class="btn-prev" id="qPrev" onclick="prevQ()" disabled>← Précédent</button>
     <button class="btn-next" id="qNext" onclick="nextQ()" disabled>Suivant →</button>
   </div>
+</div>
+
+<!-- ═══ MILESTONE POP-UP ═══ -->
+<div class="q-milestone" id="qMilestone" aria-live="polite" aria-atomic="true">
+  <span class="q-milestone-diamond">◆</span>
+  <span class="q-milestone-text">Allez, plus que <span class="q-milestone-count" id="qMilestoneN"></span> questions !</span>
 </div>
 
 <!-- ═══ KEYBOARD HINT ═══ -->
@@ -590,6 +636,27 @@ let userName = '';
 let cur = 0;
 const chosen = new Array(QS.length).fill(null);
 let autoTimer = null;
+const milestoneShown = {};
+
+/* ═══════════════════════════════════════════════
+   MILESTONE POP-UP
+   ═══════════════════════════════════════════════ */
+function showMilestone(n) {
+  if (milestoneShown[n]) return;
+  milestoneShown[n] = true;
+  var el    = document.getElementById('qMilestone');
+  var count = document.getElementById('qMilestoneN');
+  count.textContent = n;
+  el.classList.add('show');
+  setTimeout(function () { el.classList.remove('show'); }, 2800);
+}
+
+function checkMilestone() {
+  var remaining = QS.length - cur;
+  if (remaining === 15 || remaining === 10 || remaining === 5) {
+    showMilestone(remaining);
+  }
+}
 
 /* ═══════════════════════════════════════════════
    NAME INPUT
@@ -633,6 +700,7 @@ function updateBar() {
    ═══════════════════════════════════════════════ */
 function render(dir) {
   updateBar();
+  if (dir === 'next') checkMilestone();
   const panel  = document.getElementById('qPanel');
   const q      = QS[cur];
   const outC   = dir === 'next' ? 'slide-out-l' : 'slide-out-r';

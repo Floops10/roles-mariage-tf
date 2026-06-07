@@ -37,7 +37,7 @@ html, body { height: 100svh; overflow: hidden; }
   width: 51%;
   background: var(--navy);
   will-change: transform;
-  transition: transform 1.55s var(--ease-inout);
+  transition: transform 1.2s var(--ease-inout);
 }
 .intro-door-l { left: 0; }
 .intro-door-r { right: 0; }
@@ -54,7 +54,9 @@ html, body { height: 100svh; overflow: hidden; }
   justify-content: center;
   gap: 1.4rem;
   pointer-events: none;
+  transition: opacity 0.28s ease;
 }
+#intro.open .intro-center { opacity: 0; }
 
 /* Logo sur fond navy : inversé pour apparaître blanc — PNG plat, aucune perte */
 .intro-logo {
@@ -146,7 +148,6 @@ html, body { height: 100svh; overflow: hidden; }
 .hero-h1 {
   font-family: var(--font-title);
   font-weight: 400;
-  font-style: italic;
   font-size: clamp(2.4rem, 5.5vw, 5rem);
   color: var(--navy);
   line-height: 1.05;
@@ -200,7 +201,6 @@ html, body { height: 100svh; overflow: hidden; }
 .cd-days {
   font-family: var(--font-title);
   font-weight: 400;
-  font-style: italic;
   font-size: clamp(5rem, 12vw, 10.5rem);
   line-height: 1.1;
   color: var(--navy);
@@ -277,7 +277,6 @@ html, body { height: 100svh; overflow: hidden; }
 .db-n {
   font-family: var(--font-title);
   font-weight: 400;
-  font-style: italic;
   font-size: clamp(1.9rem, 3.5vw, 3.2rem);
   line-height: 1.1;
   color: var(--gold);
@@ -299,30 +298,30 @@ html, body { height: 100svh; overflow: hidden; }
    ═══════════════════════════════════════════════ */
 @media (max-width: 900px) {
   html, body { height: auto; overflow: auto; }
-  #home      { height: auto; overflow: visible; }
+  #home      { height: auto; min-height: calc(100svh - var(--nav-h)); overflow: visible; }
   #hero {
     grid-template-columns: 1fr;
-    padding: 2.5rem var(--page-pad) 2rem;
-    gap: 2rem;
+    padding: 2rem 1.4rem;
+    gap: 1.5rem;
   }
   .hero-right {
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
   .cd-days { font-size: clamp(4rem, 18vw, 6rem); }
-  #dashboard { padding: 1.6rem var(--page-pad); }
+  .cd-block { max-width: 320px; }
+  #dashboard { padding: 1.4rem 1.4rem; }
 }
 @media (max-width: 640px) {
-  #hero { padding: 2rem 1.4rem 2rem; }
+  #hero { padding: 1.5rem 1.1rem; }
+  .hero-logo { display: none; }
   .hero-ctas { flex-direction: column; }
   .hero-ctas .btn-primary,
   .hero-ctas .btn-outline { width: 100%; text-align: center; justify-content: center; }
-  .hero-right { flex-direction: column; align-items: flex-start; }
-  #dashboard { padding: 1.4rem 1.4rem; }
-  .db-grid   { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .db-item   { border-right: none; border-bottom: 1px solid rgba(201,168,108,.12); padding: 0 0 1rem; margin: 0 0 1rem; }
-  .db-item:last-child { border-bottom: none; padding: 0; margin: 0; }
+  #dashboard { padding: 1rem 1.1rem; }
+  .db-item   { padding-right: 1rem; margin-right: 1rem; }
+  .db-n      { font-size: clamp(1.3rem, 7vw, 1.8rem); }
 }
 </style>
 </head>
@@ -377,10 +376,10 @@ html, body { height: 100svh; overflow: hidden; }
     <div class="hero-left">
       <span class="hero-script">Thomy & Florian</span>
       <h1 class="hero-h1" id="hero-h1">Rôles<br>d'Honneur</h1>
-      <p class="hero-date">12 · XII · MMXXVI · Paris</p>
+      <p class="hero-date">12 · XII · MMXXVI</p>
       <div class="hero-ctas">
         <a href="quiz.html" class="btn btn-primary">Trouver mon rôle</a>
-        <a href="roles.html" class="btn btn-outline">Les 30 rôles</a>
+        <a href="roles.html" class="btn btn-outline">Les Rôles d'Honneur</a>
       </div>
     </div>
 
@@ -408,7 +407,7 @@ html, body { height: 100svh; overflow: hidden; }
         <span class="db-l">Personnes inscrites</span>
       </div>
       <div class="db-item">
-        <span class="db-n" id="dbFree">60</span>
+        <span class="db-n" id="dbFree">44</span>
         <span class="db-l">Places encore libres</span>
       </div>
       <div class="db-item">
@@ -434,11 +433,11 @@ html, body { height: 100svh; overflow: hidden; }
   function openIntro() {
     sessionStorage.setItem('introSeen', '1');
     intro.classList.add('open');
-    setTimeout(function () { intro.classList.add('gone'); }, 1700);
+    setTimeout(function () { intro.classList.add('gone'); }, 1300);
   }
 
   intro.addEventListener('click', openIntro, { once: true });
-  setTimeout(openIntro, 3000);
+  setTimeout(openIntro, 1800);
 }());
 
 /* ═══════════════════════════════════════════════
@@ -500,7 +499,7 @@ html, body { height: 100svh; overflow: hidden; }
         if (arr.length >= 2) fullRoles++;
       }
     });
-    var freeSpots = Math.max(0, 60 - totalPeople);
+    var freeSpots = Math.max(0, 44 - totalPeople);
     document.getElementById('dbSignups').textContent = totalPeople;
     document.getElementById('dbFree').textContent    = freeSpots;
     document.getElementById('dbFull').textContent    = fullRoles;
