@@ -778,14 +778,14 @@ const ROLES = [
    nom:'Coordinateur de Sortie',    en:'The Exit Maestro',
    pour:'mixte', periode:['ceremonies'], spots:2,
    importance:'Orchestre les deux sorties de cérémonie pour un effet spectaculaire.',
-   mission:"Briefer les invités, distribuer les éléments à lancer et coordonner la haie d'honneur aux sorties de 15h et 16h30.",
+   mission:"Briefer les invités, distribuer les éléments à lancer et coordonner la haie d'honneur à chaque sortie des mariés.",
    impact:'Des sorties de cérémonie grandioses, parfaitement synchronisées et mémorables.'},
 
   {id:10, ph:2, phName:'La Cérémonie', num:'15',
    nom:"Chargé(e) d'Accueil",      en:'The Welcome Connoisseur',
    pour:'mixte', periode:['ceremonies'], spots:4,
    importance:'Premier visage hospitalier et bienveillant du couple pour les convives.',
-   mission:"Accueillir chaleureusement les invités à partir de 12h45, distribuer les programmes et orienter chacun.",
+   mission:"Accueillir chaleureusement les invités dès leur arrivée, distribuer les programmes et orienter chacun.",
    impact:"Élimine toute confusion et installe un sentiment d'organisation haut de gamme dès l'arrivée."},
 
   {id:11, ph:2, phName:'La Cérémonie', num:'30', pending:true,
@@ -806,7 +806,7 @@ const ROLES = [
    nom:'Chef de Route',             en:'The Convoy Leader',
    pour:'mixte', periode:['ceremonies'], spots:2,
    importance:'Garant de la ponctualité et de la cohésion du convoi vers les lieux.',
-   mission:"Organiser et guider les convois de voitures entre 13h45 et 16h30, s'assurer que personne ne se perd.",
+   mission:"Organiser et guider les convois de voitures entre les différents lieux, s'assurer que personne ne se perd.",
    impact:'Tous les invités arrivent en temps et en heure, sans confusion ni retard.'},
 
   {id:39, ph:2, phName:'La Cérémonie', num:'18',
@@ -815,6 +815,13 @@ const ROLES = [
    importance:'Garant de la fluidité et du placement élégant des invités en cérémonie.',
    mission:'Accueillir et guider les invités vers leurs places lors des cérémonies civile et religieuse.',
    impact:"Une cérémonie qui commence dans l'ordre et la sérénité, sans confusion."},
+
+  {id:43, ph:2, phName:'La Cérémonie', num:'33',
+   nom:'Magiciens du Décor',        en:'The Scene Changers',
+   pour:'mixte', periode:['ceremonies'], spots:5,
+   importance:"Une équipe vive et discrète, capable de transformer une salle pendant que personne ne regarde.",
+   mission:"Pendant la sortie des mariés sous la tonnelle et les félicitations, réagencer L'Étable en 15 à 20 minutes : retirer les housses, pousser ou empiler les chaises sur le côté, n'en garder qu'une dizaine joliment disposées, mettre en valeur les tableaux de la vente aux enchères et installer les mange-debout.",
+   impact:"Les invités retrouvent une salle métamorphosée : la surprise est totale et la journée bascule dans son moment suivant."},
 
   // ─── PHASE 3 : Le Vin d'Honneur ─────────────────────────────────────────────
 
@@ -838,21 +845,21 @@ const ROLES = [
    nom:"Inspecteur d'Ambiance",     en:'The Vibe Inspector',
    pour:'mixte', periode:['vin_honneur'], spots:2,
    importance:'Dernier regard qualité avant le début de la réception.',
-   mission:"Vérifier à 16h30 la mise en place de la salle, l'ambiance générale et signaler toute anomalie.",
+   mission:"Vérifier, juste avant l'arrivée des invités, la mise en place de la salle et signaler toute anomalie.",
    impact:'La salle est impeccable et prête à accueillir les invités dans les meilleures conditions.'},
 
   {id:41, ph:3, phName:"Le Vin d'Honneur", num:'22',
    nom:'Rabatteur Photo de Groupe', en:'The Group Shot Wrangler',
    pour:'mixte', periode:['vin_honneur'], spots:2,
    importance:'Garant que chaque famille et groupe soit photographié.',
-   mission:'Rassembler les différents groupes pour les photos de famille et de groupe entre 17h et 19h30.',
+   mission:"Rassembler les différents groupes pour les photos de famille et de groupe pendant le vin d'honneur.",
    impact:'Toutes les photos de groupe importantes sont réalisées sans oubli ni stress.'},
 
   {id:42, ph:3, phName:"Le Vin d'Honneur", num:'23',
    nom:'Rabatteur pour le Dîner',   en:'The Dinner Caller',
    pour:'mixte', periode:['diner'], spots:2,
    importance:'Le maillon essentiel pour une transition fluide vers le dîner.',
-   mission:'Rassembler et guider les invités vers la salle de dîner entre 19h30 et 20h.',
+   mission:'Rassembler et guider les invités vers la salle de dîner au moment du passage à table.',
    impact:'Le dîner débute dans les temps avec tous les convives présents.'},
 
   // ─── PHASE 4 : La Soirée ────────────────────────────────────────────────────
@@ -866,8 +873,8 @@ const ROLES = [
   {id:21, ph:4, phName:'La Soirée', num:'25',
    nom:'Coordinateur Backstage',    en:'The Surprise Strategist',
    pour:'mixte', periode:['diner','soiree'], spots:3,
-   importance:'Garant du rythme de la soirée, orchestre les coulisses depuis 20h.',
-   mission:'Coordonner les interventions, discours et surprises avec le traiteur et le DJ entre 20h et 00h30.',
+   importance:'Garant du rythme de la soirée, orchestre les coulisses du début à la fin.',
+   mission:'Coordonner les interventions, discours et surprises avec le traiteur et le DJ tout au long de la soirée.',
    impact:'Un dîner fluide et vivant, sans longueurs, avec un service parfait.'},
 
   {id:22, ph:4, phName:'La Soirée', num:'31', pending:true,
@@ -881,7 +888,7 @@ const ROLES = [
    nom:'Chauffeur de Salle',        en:'The Dancefloor Igniter',
    pour:'mixte', periode:['soiree'], spots:4,
    importance:"Moteur festif qui maintient la piste animée jusqu'à la fin.",
-   mission:'Chauffer la salle, motiver les invités à danser et maintenir une énergie festive maximale de 23h à la fin.',
+   mission:"Chauffer la salle, motiver les invités à danser et maintenir une énergie festive maximale jusqu'au bout de la nuit.",
    impact:'Une piste de danse constamment habitée et une fête mémorable qui ne s\'arrête pas.'},
 
   {id:24, ph:4, phName:'La Soirée', num:'27',
