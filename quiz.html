@@ -615,7 +615,7 @@ const QS = [
   ]},
 ];
 
-/* Trait → role affinity weights (29 rôles actifs) */
+/* Trait → role affinity weights (24 rôles conseillés par le quiz) */
 const RT = {
   1: {empa:3,fiab:3,orga:1},
   2: {creat:3,orga:2},
@@ -625,8 +625,6 @@ const RT = {
   8: {fiab:3,orga:2},
   9: {coord:3,orga:2,ener:1},
   10:{social:3,empa:1},
-  12:{empa:3},
-  14:{docu:3,creat:2},
   16:{social:2,docu:2,fiab:2},
   20:{fiab:3,orga:2,empa:1},
   21:{orga:3,coord:2,fiab:2},
@@ -640,15 +638,13 @@ const RT = {
   34:{orga:3,coord:2,fiab:2},
   35:{creat:2,fiab:2,orga:1},
   36:{orga:3,coord:2,fiab:2},
-  37:{social:2,fiab:2,coord:2,orga:1},
-  38:{orga:3,coord:2},
   39:{social:2,orga:2,empa:1},
   40:{orga:3,coord:2},
   41:{coord:2,orga:2,social:1},
   42:{coord:2,ener:2,social:1},
 };
 
-const ROLES_IDS = [1,2,3,4,5,8,9,10,12,14,16,20,21,23,24,27,30,31,32,33,34,35,36,37,38,39,40,41,42];
+const ROLES_IDS = [1,2,3,4,8,9,10,16,20,21,23,24,27,30,31,32,33,34,35,36,39,40,41,42];
 
 /* ═══════════════════════════════════════════════
    STATE
