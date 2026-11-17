@@ -602,7 +602,7 @@
 <!-- ═══ PAGE HEADER ═══ -->
 <header class="page-head" aria-labelledby="page-title">
   <div class="ph-inner">
-    <span class="ph-script">30 missions actives</span>
+    <span class="ph-script">29 missions actives</span>
     <h1 class="ph-title" id="page-title">Rôles d'Honneur</h1>
     <p class="ph-desc">Filtrez par moment de la journée ou par camp (Mariée / Marié / Mixte). Cliquez sur un rôle pour en voir le détail et vous inscrire.</p>
   </div>
@@ -806,9 +806,9 @@ const ROLES = [
 
   {id:16, ph:3, phName:"Le Vin d'Honneur", num:'19',
    nom:"Gardiens de l'Urne & du Livre d'Or",   en:"The Memory Keepers",
-   pour:'mixte', periode:['vin_honneur'], spots:2,
+   pour:'mixte', periode:['vin_honneur','soiree'], spots:2,
    importance:"Gardiens des trésors matériels et écrits qui traverseront le temps.",
-   mission:"Dynamiser l'espace du livre d'or, motiver les invités à contribuer et sécuriser l'urne à cadeaux.",
+   mission:"Dynamiser l'espace du livre d'or, motiver les invités à contribuer et sécuriser l'urne à cadeaux. À la fin de la soirée, prendre l'urne et le livre d'or et les mettre en sécurité, pour que les mariés puissent partir l'esprit libre.",
    impact:"Un recueil complet de témoignages d'amour et une urne soigneusement gardée."},
 
   {id:40, ph:3, phName:"Le Vin d'Honneur", num:'20',
@@ -867,21 +867,14 @@ const ROLES = [
    mission:"Chauffer la salle : rejoindre les mariés sur la piste dès leur entrée dans la grande salle et à l'ouverture de bal, danser avec eux et motiver les invités à suivre, jusqu'au bout de la nuit.",
    impact:"Une piste de danse constamment habitée et une fête mémorable qui ne s'arrête pas."},
 
-  {id:24, ph:4, phName:"La Soirée", num:'28',
-   nom:"Gardienne de Fin de Nuit",   en:"The Guardian of the Temple",
-   pour:'mixte', periode:['soiree'], spots:2,
-   importance:"Rôle de confiance protégeant la sérénité matérielle du couple.",
-   mission:"À la fin de la soirée, prendre l'urne et la mettre en sécurité, pour que les mariés puissent partir l'esprit libre.",
-   impact:"Permet aux mariés de se retirer l'esprit totalement libéré."},
-
-  {id:27, ph:4, phName:"La Soirée", num:'29',
+  {id:27, ph:4, phName:"La Soirée", num:'28',
    nom:"Collectrice de Playlists",   en:"The Dance-List Collector",
    pour:'mixte', periode:['soiree'], spots:2,
    importance:"Donne un pouvoir d'influence musicale aux tables.",
    mission:"Pendant que les mariés font le tour des tables, demander aux invités leurs idées de musique et transmettre la sélection au DJ.",
    impact:"Une programmation nocturne en phase avec les désirs réels de l'assemblée."},
 
-  {id:30, ph:4, phName:"La Soirée", num:'30',
+  {id:30, ph:4, phName:"La Soirée", num:'29',
    nom:"Responsable des Cadeaux",   en:"The Favor Queen",
    pour:'mixte', periode:['soiree'], spots:2,
    importance:"Dernier point de contact, remettant le témoignage final de gratitude.",
